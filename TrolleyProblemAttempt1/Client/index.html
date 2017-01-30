@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<canvas id="ctx" width="1200" height="1000" ></canvas>
+
+
+<script src="https://cdn.socket.io/socket.io-1.4.5.js">
+
+</script>
+<script src="/Client/js/pixi.min.js">
+
+</script>
+<script>
+    var BUNNY_LIST = [];
+    var YOUR_PLAYER_ID;
+//var YOUR_PLAYER_ID;
+//socket.on('YOUR_PLAYER_ID',function(data){
+//    YOUR_PLAYER_ID=data;
+//});
+
+    var myView = document.getElementById('ctx');
+    var renderer = PIXI.autoDetectRenderer(1200, 1000, {view: myView});
+//
+//// create the root of the scene graph
+    var stage = new PIXI.Container();
+//
+//// create a texture from an image path
+    var texture = PIXI.Texture.fromImage('/Client/img/catTest.jpg');
+    var texture2 = PIXI.Texture.fromImage('/Client/img/1-16.png');
+    var texture3 = PIXI.Texture.fromImage('/Client/img/2-24.png');
+    var textureReady = PIXI.Texture.fromImage('/Client/img/ready.png');
+//
+////
+//    for (var i = 0; i < 0; i++)
+//    {
+//        createBunny(Math.floor(Math.random() * 200), Math.floor(Math.random() * 100));
+//    }
+    function playerCount(counter) {
+        var localCounter = counter.toString();
+        if (localCounter === '1') {
+            var bunny = new PIXI.Text(localCounter,{ color:'#8c1c1c',
+             fill: '#cc00ff',
+            align: 'center',
+        stroke: '#FFFFFF',
+        strokeThickness: 6});
+            bunny.scale.set(1);
+        } else if (localCounter === '2') {
+            var bunny = new PIXI.Text(localCounter,{ color:'#8c1c1c',
+             fill: '#cc00ff',
+            align: 'center',
+        stroke: '#FFFFFF',
+        strokeThickness: 6});
+            bunny.scale.set(1);
+        }
+         else if (localCounter === '3') {
+            var bunny = new PIXI.Text(localCounter,{ color:'#8c1c1c',
+             fill: '#cc00ff',
+            align: 'center',
+        stroke: '#FFFFFF',
+        strokeThickness: 6});
+            bunny.scale.set(1);
+        }
+//        bunny.height = 20;
+//        bunny.width = 20;
+//        bunny.position.x = 20;
+//        bunny.position.y = 20;
+//        bunny.anchor.set(0.5);
+        //bunny.scale.set(1);
+        stage.addChild(bunny);
+        
+//        playerCount= new PIXI.Text(counter.toString(),{
+//            color:'#8c1c1c',
+  //           fill: '#cc00ff',
+    //        align: 'center',
+      //  stroke: '#FFFFFF',
+        //strokeThickness: 6
+       // });
+//        stage.addChild(playerCount);
+    }
+    function playerReadyButton(id, boolean) {
+        var bunny = new PIXI.Sprite(textureReady);
+        bunny.localBool=boolean.toString();
+        bunny.localID = id.toString();
+        bunny.position.x = 20;
+        bunny.position.y = 950;
+        bunny.isdown=false;
+        bunny.anchor.set(0.5);
+        bunny.scale.set(1);
+        bunny.position.x = 20;
+        bunny.position.y = 950;
+        bunny.interactive = true;
+        bunny.buttonMode = true;
+        //stage.addChild(bunny);
+        bunny.on('mousedown', onButtonDown);
+
+        function onButtonDown() {
+            this.isdown = true;
+            this.alpha = 1;
+            socket.emit('ready',{id:id,isReady:boolean});
+            bunny.visible=false;
+        };
+        //stage.addChild(bunny);
+        if(bunny.localBool==='false' && bunny.localID===YOUR_PLAYER_ID.toString()){
+            //console.log(bunny.localBool);
+        stage.addChild(bunny);
+    };
+}
+
+    function createBunny(x, y, id, cardNum,allReady)
+    {
+        //console.log(id);
+        //console.log(YOUR_PLAYER_ID);
+        //bunny.localCardNum=cardNum.toString();
+        localCardNum = cardNum.toString();
+        console.log(localCardNum);
+        localID = id.toString();
+        localID2 = YOUR_PLAYER_ID.toString();
+        // create our little bunny friend..
+        var bunny = new PIXI.Sprite(texture);
+        id = Math.random();
+        bunny.localCardNum = cardNum.toString();
+        bunny.allReady=allReady.toString();
+
+        // enable the bunny to be interactive... this will allow it to respond to mouse and touch events
+        if (localID === localID2&&bunny.allReady==='true') {
+            bunny.interactive = true;
+            bunny.visible = true;
+        }else if(localID === localID2&&bunny.allReady==='false'){
+            bunny.interactive = false;
+            bunny.visible = true;
+        }
+        else {
+            bunny.interactive = false;
+            bunny.visible = false;
+        }
+        ;
+        if (y < 705) {
+            bunny.visible = true;
+        }
+
+
+        // this button mode will mean the hand cursor appears when you roll over the bunny with your mouse
+        bunny.buttonMode = true;
+
+        // center the bunny's anchor point
+        bunny.anchor.set(0.3);
+
+        // make it a bit bigger, so it's easier to grab
+        bunny.scale.set(1);
+
+        // setup events
+        bunny
+                // events for drag start
+                .on('mousedown', onDragStart)
+                .on('touchstart', onDragStart)
+                // events for drag end
+                .on('mouseup', onDragEnd)
+                .on('mouseupoutside', onDragEnd)
+                .on('touchend', onDragEnd)
+                .on('touchendoutside', onDragEnd)
+                // events for drag move
+                .on('mousemove', onDragMove)
+                .on('touchmove', onDragMove);
+
+        // move the sprite to its designated position
+        bunny.position.x = x;
+        bunny.position.y = y;
+        BUNNY_LIST.push(this);
+
+        socket.emit('newBunny', {id: this.id});
+        // add it to the stage
+        stage.addChild(bunny);
+    }
+
+    requestAnimationFrame(animate);
+
+    function animate() {
+
+        requestAnimationFrame(animate);
+
+        // render the stage
+        renderer.render(stage);
+    }
+
+    function onDragStart(event)
+    {
+
+        // store a reference to the data
+        // the reason for this is because of multitouch
+        // we want to track the movement of this particular touch
+        this.data = event.data;
+        this.alpha = 0.5;
+        this.dragging = true;
+    }
+
+    function onDragEnd()
+    {
+        socket.emit('kp', {inputId: 'dragged', positionx: this.position.x, positiony: this.position.y, state: true, cardNum: this.localCardNum});
+        console.log(localCardNum);
+        socket.emit('drop');
+        this.alpha = 1;
+
+        this.dragging = false;
+
+
+        // set the interaction data to null
+        this.data = null;
+
+        stage.removeChild(this);
+
+    }
+
+    function onDragMove()
+    {
+
+        if (this.dragging)
+        {
+            var newPosition = this.data.getLocalPosition(this.parent);
+            this.position.x = newPosition.x;
+            this.position.y = newPosition.y;
+            //socket.emit('kp', {inputId: 'dragged',positionx:this.position.x, positiony:this.position.y, state: true});
+
+
+        }
+
+    }
+
+    var ctx = document.getElementById("ctx").getContext("2d");
+    // ctx.font = '30px Arial';
+
+    var socket = io();
+
+    socket.on('YOUR_PLAYER_ID', function (data) {
+        YOUR_PLAYER_ID = data;
+        //console.log(data);
+        //console.log(YOUR_PLAYER_ID);
+    });
+//            socket.emit('test string',{testObject:'testObjectString'});
+//            
+//            var testF=function(){
+//                socket.emit('testfunction',{reason:'testing'});
+//            };
+
+    socket.on('newP', function (data) {
+        for (var i = stage.children.length - 1; i >= 0; i--) {
+            stage.removeChild(stage.children[i]);
+        }
+        // renderer.render(stage);
+        // ctx.clearRect(0, 0, 500, 500);
+        for (var i = 0; i < data.length; i++) {
+            playerReadyButton(data[i].id, data[i].ready);
+            createBunny(data[i].card1.x, data[i].card1.y, data[i].id, data[i].card1.cardNum,data[i].allReady);
+            createBunny(data[i].card2.x, data[i].card2.y, data[i].id, data[i].card2.cardNum,data[i].allReady);
+            createBunny(data[i].card3.x, data[i].card3.y, data[i].id, data[i].card3.cardNum,data[i].allReady);
+            createBunny(data[i].card4.x, data[i].card4.y, data[i].id, data[i].card4.cardNum,data[i].allReady);
+            createBunny(data[i].card5.x, data[i].card5.y, data[i].id, data[i].card5.cardNum,data[i].allReady);
+            playerCount(data[i].counter);
+           // playerReadyButton(data[i].id, data[i].ready);
+
+        }
+        ;
+        //ctx.fillRect( data[i].x, data[i].y,150,100);
+    });
+
+    document.onkeydown = function (event) {
+        ///console.log(event);
+//        if (event.keyCode === 68)
+//            socket.emit('kp', {inputId: 'right', state: true});
+//        else if (event.keyCode === 83)
+//            socket.emit('kp', {inputId: 'down', state: true});
+//        else if (event.keyCode === 65)
+//            socket.emit('kp', {inputId: 'left', state: true});
+//        else if (event.keyCode === 87)
+//            socket.emit('kp', {inputId: 'up', state: true});
+
+    };
+
+    document.onkeyup = function (event) {
+//        if (event.keyCode === 68)
+//            socket.emit('kp', {inputId: 'right', state: false});
+//        else if (event.keyCode === 83)
+//            socket.emit('kp', {inputId: 'down', state: false});
+//        else if (event.keyCode === 65)
+//            socket.emit('kp', {inputId: 'left', state: false});
+//        else if (event.keyCode === 87)
+//            socket.emit('kp', {inputId: 'up', state: false});
+
+    };
+//           
+
+//            socket.on('servermessage',function(data){
+//                console.log(data.msg);
+//            });
+</script>
+
+
