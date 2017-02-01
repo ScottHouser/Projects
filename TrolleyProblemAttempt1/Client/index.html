@@ -20,18 +20,20 @@ and open the template in the editor.
 //socket.on('YOUR_PLAYER_ID',function(data){
 //    YOUR_PLAYER_ID=data;
 //});
-
+var stage = new PIXI.Container();
     var myView = document.getElementById('ctx');
-    var renderer = PIXI.autoDetectRenderer(1200, 1000, {view: myView});
+    
+    var renderer = PIXI.autoDetectRenderer(1200, 1000, {view: myView,backgroundColor : 0x1099bb});
 //
 //// create the root of the scene graph
-    var stage = new PIXI.Container();
+    //var stage = new PIXI.Container();
 //
 //// create a texture from an image path
     var texture = PIXI.Texture.fromImage('/Client/img/catTest.jpg');
     var texture2 = PIXI.Texture.fromImage('/Client/img/1-16.png');
     var texture3 = PIXI.Texture.fromImage('/Client/img/2-24.png');
     var textureReady = PIXI.Texture.fromImage('/Client/img/ready.png');
+    var exampleStage = PIXI.Texture.fromImage('/Client/img/example.jpg');
 //
 ////
 //    for (var i = 0; i < 0; i++)
@@ -108,6 +110,25 @@ and open the template in the editor.
         stage.addChild(bunny);
     };
 }
+    function background() {
+        var bunny = new PIXI.Sprite(exampleStage);
+        //bunny.localBool=boolean.toString();
+        //bunny.localID = id.toString();
+        bunny.position.x = 500;
+        bunny.position.y = 500;
+        //bunny.isdown=false;
+        bunny.anchor.set(0.5);
+        bunny.scale.set(3);
+       // bunny.position.x = 20;
+        //bunny.position.y = 950;
+        bunny.interactive = false;
+        bunny.buttonMode = false;
+        //stage.addChild(bunny);
+        
+            //console.log(bunny.localBool);
+        stage.addChild(bunny);
+    
+}
 
     function createBunny(x, y, id, cardNum,allReady)
     {
@@ -149,7 +170,7 @@ and open the template in the editor.
         bunny.anchor.set(0.3);
 
         // make it a bit bigger, so it's easier to grab
-        bunny.scale.set(1);
+        bunny.scale.set(.7);
 
         // setup events
         bunny
@@ -248,6 +269,7 @@ and open the template in the editor.
         for (var i = stage.children.length - 1; i >= 0; i--) {
             stage.removeChild(stage.children[i]);
         }
+        background();
         // renderer.render(stage);
         // ctx.clearRect(0, 0, 500, 500);
         for (var i = 0; i < data.length; i++) {
