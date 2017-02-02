@@ -45,11 +45,11 @@ var Player = function (id, counter) {
         dragging:false,
         dragx:0,
         dragy:0,
-        card1:{x:100,y:800,dragx:100,dragy:800,id:id,cardNum:1},
-        card2:{x:300,y:800,dragx:300,dragy:800,id:id,cardNum:2},
-        card3:{x:500,y:800,dragx:500,dragy:800,id:id,cardNum:3},
-        card4:{x:700,y:800,dragx:700,dragy:800,id:id,cardNum:4},
-        card5:{x:900,y:800,dragx:900,dragy:800,id:id,cardNum:5}
+        card1:{x:100,y:600,dragx:100,dragy:600,id:id,cardNum:1,image:''},
+        card2:{x:300,y:600,dragx:300,dragy:600,id:id,cardNum:2,image:''},
+        card3:{x:500,y:600,dragx:500,dragy:600,id:id,cardNum:3,image:''},
+        card4:{x:700,y:600,dragx:700,dragy:600,id:id,cardNum:4,image:''},
+        card5:{x:900,y:600,dragx:900,dragy:600,id:id,cardNum:5,image:''}
         
     };
     self.updatePosition = function () {
@@ -89,6 +89,11 @@ io.sockets.on('connection', function (socket) {
     SOCKET_LIST[socket.id] = socket;
 
     var player = Player(socket.id);
+    player.card1.image='/Client/img/catTest.jpg';
+    player.card2.image='/Client/img/catTest.jpg';
+    player.card3.image='/Client/img/catTest.jpg';
+    player.card4.image='/Client/img/catTest.jpg';
+    player.card5.image='/Client/img/catTest.jpg';
 
     PLAYER_LIST[socket.id] = player;
 
@@ -182,6 +187,7 @@ setInterval();
             card3:player.card3,
             card4:player.card4,
             card5:player.card5
+            
             
             
         });

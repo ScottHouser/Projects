@@ -23,7 +23,7 @@ and open the template in the editor.
 var stage = new PIXI.Container();
     var myView = document.getElementById('ctx');
     
-    var renderer = PIXI.autoDetectRenderer(1200, 1000, {view: myView,backgroundColor : 0x1099bb});
+    var renderer = PIXI.autoDetectRenderer(1200, 700, {view: myView,backgroundColor : 0x1099bb});
 //
 //// create the root of the scene graph
     //var stage = new PIXI.Container();
@@ -33,7 +33,7 @@ var stage = new PIXI.Container();
     var texture2 = PIXI.Texture.fromImage('/Client/img/1-16.png');
     var texture3 = PIXI.Texture.fromImage('/Client/img/2-24.png');
     var textureReady = PIXI.Texture.fromImage('/Client/img/ready.png');
-    var exampleStage = PIXI.Texture.fromImage('/Client/img/example.jpg');
+    var exampleStage = PIXI.Texture.fromImage('/Client/img/track.jpg');
 //
 ////
 //    for (var i = 0; i < 0; i++)
@@ -86,13 +86,13 @@ var stage = new PIXI.Container();
         var bunny = new PIXI.Sprite(textureReady);
         bunny.localBool=boolean.toString();
         bunny.localID = id.toString();
-        bunny.position.x = 20;
-        bunny.position.y = 950;
+        bunny.position.x = 800;
+        bunny.position.y = 250;
         bunny.isdown=false;
         bunny.anchor.set(0.5);
         bunny.scale.set(1);
-        bunny.position.x = 20;
-        bunny.position.y = 950;
+        //bunny.position.x = 20;
+        //bunny.position.y = 950;
         bunny.interactive = true;
         bunny.buttonMode = true;
         //stage.addChild(bunny);
@@ -114,11 +114,11 @@ var stage = new PIXI.Container();
         var bunny = new PIXI.Sprite(exampleStage);
         //bunny.localBool=boolean.toString();
         //bunny.localID = id.toString();
-        bunny.position.x = 500;
-        bunny.position.y = 500;
+        bunny.position.x = 350;
+        bunny.position.y = 300;
         //bunny.isdown=false;
         bunny.anchor.set(0.5);
-        bunny.scale.set(3);
+        bunny.scale.set(.2);
        // bunny.position.x = 20;
         //bunny.position.y = 950;
         bunny.interactive = false;
@@ -130,17 +130,20 @@ var stage = new PIXI.Container();
     
 }
 
-    function createBunny(x, y, id, cardNum,allReady)
+    function createBunny(x, y, id, cardNum,allReady,image)
     {
         //console.log(id);
         //console.log(YOUR_PLAYER_ID);
         //bunny.localCardNum=cardNum.toString();
+        var thisCardImage = PIXI.Texture.fromImage(image);
+        localCardImage=image.toString();
+        console.log(localCardImage);
         localCardNum = cardNum.toString();
         console.log(localCardNum);
         localID = id.toString();
         localID2 = YOUR_PLAYER_ID.toString();
         // create our little bunny friend..
-        var bunny = new PIXI.Sprite(texture);
+        var bunny = new PIXI.Sprite(thisCardImage);
         id = Math.random();
         bunny.localCardNum = cardNum.toString();
         bunny.allReady=allReady.toString();
@@ -158,7 +161,7 @@ var stage = new PIXI.Container();
             bunny.visible = false;
         }
         ;
-        if (y < 705) {
+        if (y < 505) {
             bunny.visible = true;
         }
 
@@ -274,11 +277,11 @@ var stage = new PIXI.Container();
         // ctx.clearRect(0, 0, 500, 500);
         for (var i = 0; i < data.length; i++) {
             playerReadyButton(data[i].id, data[i].ready);
-            createBunny(data[i].card1.x, data[i].card1.y, data[i].id, data[i].card1.cardNum,data[i].allReady);
-            createBunny(data[i].card2.x, data[i].card2.y, data[i].id, data[i].card2.cardNum,data[i].allReady);
-            createBunny(data[i].card3.x, data[i].card3.y, data[i].id, data[i].card3.cardNum,data[i].allReady);
-            createBunny(data[i].card4.x, data[i].card4.y, data[i].id, data[i].card4.cardNum,data[i].allReady);
-            createBunny(data[i].card5.x, data[i].card5.y, data[i].id, data[i].card5.cardNum,data[i].allReady);
+            createBunny(data[i].card1.x, data[i].card1.y, data[i].id, data[i].card1.cardNum,data[i].allReady, data[i].card1.image);
+            createBunny(data[i].card2.x, data[i].card2.y, data[i].id, data[i].card2.cardNum,data[i].allReady,data[i].card2.image);
+            createBunny(data[i].card3.x, data[i].card3.y, data[i].id, data[i].card3.cardNum,data[i].allReady,data[i].card3.image);
+            createBunny(data[i].card4.x, data[i].card4.y, data[i].id, data[i].card4.cardNum,data[i].allReady,data[i].card4.image);
+            createBunny(data[i].card5.x, data[i].card5.y, data[i].id, data[i].card5.cardNum,data[i].allReady,data[i].card5.image);
             playerCount(data[i].counter);
            // playerReadyButton(data[i].id, data[i].ready);
 
