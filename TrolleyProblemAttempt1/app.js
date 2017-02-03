@@ -3,6 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+var shuffle = require('shuffle-array');
 var pixi= require('pixi');
 var express = require('express');
 var app = express();
@@ -22,6 +23,55 @@ var BUNNY_LIST = [];
 var counter=0;
 var allPlayersReady=false;
 var activePlayer=0;
+var CARD_LIST=[];
+var CARD_LIST_COUNTER=0;
+CARD_LIST.push('/Client/img/1.jpg');
+CARD_LIST.push('/Client/img/2.jpg');
+CARD_LIST.push('/Client/img/3.jpg');
+CARD_LIST.push('/Client/img/4.jpg');
+CARD_LIST.push('/Client/img/5.jpg');
+CARD_LIST.push('/Client/img/6.jpg');
+CARD_LIST.push('/Client/img/7.jpg');
+CARD_LIST.push('/Client/img/8.jpg');
+CARD_LIST.push('/Client/img/9.jpg');
+CARD_LIST.push('/Client/img/10.jpg');
+CARD_LIST.push('/Client/img/11.jpg');
+CARD_LIST.push('/Client/img/12.jpg');
+CARD_LIST.push('/Client/img/13.jpg');
+CARD_LIST.push('/Client/img/14.jpg');
+CARD_LIST.push('/Client/img/15.jpg');
+CARD_LIST.push('/Client/img/16.jpg');
+CARD_LIST.push('/Client/img/17.jpg');
+CARD_LIST.push('/Client/img/18.jpg');
+CARD_LIST.push('/Client/img/19.jpg');
+CARD_LIST.push('/Client/img/20.jpg');
+CARD_LIST.push('/Client/img/21.jpg');
+CARD_LIST.push('/Client/img/22.jpg');
+CARD_LIST.push('/Client/img/23.jpg');
+CARD_LIST.push('/Client/img/24.jpg');
+CARD_LIST.push('/Client/img/25.jpg');
+CARD_LIST.push('/Client/img/26.jpg');
+CARD_LIST.push('/Client/img/27.jpg');
+CARD_LIST.push('/Client/img/28.jpg');
+CARD_LIST.push('/Client/img/29.jpg');
+CARD_LIST.push('/Client/img/30.jpg');
+CARD_LIST.push('/Client/img/31.jpg');
+CARD_LIST.push('/Client/img/32.jpg');
+CARD_LIST.push('/Client/img/33.jpg');
+CARD_LIST.push('/Client/img/34.jpg');
+CARD_LIST.push('/Client/img/35.jpg');
+CARD_LIST.push('/Client/img/36.jpg');
+CARD_LIST.push('/Client/img/37.jpg');
+CARD_LIST.push('/Client/img/38.jpg');
+CARD_LIST.push('/Client/img/39.jpg');
+CARD_LIST.push('/Client/img/40.jpg');
+CARD_LIST.push('/Client/img/41.jpg');
+CARD_LIST.push('/Client/img/42.jpg');
+CARD_LIST.push('/Client/img/43.jpg');
+CARD_LIST.push('/Client/img/44.jpg');
+shuffle(CARD_LIST);
+
+//figure out how to shuffle array
 
 
 
@@ -89,11 +139,21 @@ io.sockets.on('connection', function (socket) {
     SOCKET_LIST[socket.id] = socket;
 
     var player = Player(socket.id);
-    player.card1.image='/Client/img/catTest.jpg';
-    player.card2.image='/Client/img/catTest.jpg';
-    player.card3.image='/Client/img/catTest.jpg';
-    player.card4.image='/Client/img/catTest.jpg';
-    player.card5.image='/Client/img/catTest.jpg';
+    player.card1.image=CARD_LIST[CARD_LIST_COUNTER];
+    CARD_LIST_COUNTER++;
+    player.card2.image=CARD_LIST[CARD_LIST_COUNTER];
+    CARD_LIST_COUNTER++;
+    player.card3.image=CARD_LIST[CARD_LIST_COUNTER];
+    CARD_LIST_COUNTER++;
+    player.card4.image=CARD_LIST[CARD_LIST_COUNTER];
+    CARD_LIST_COUNTER++;
+    player.card5.image=CARD_LIST[CARD_LIST_COUNTER];
+    CARD_LIST_COUNTER++;
+//    player.card2.image='/Client/img/catTest.jpg';
+//    player.card3.image='/Client/img/catTest.jpg';
+//    player.card4.image='/Client/img/catTest.jpg';
+//    player.card5.image='/Client/img/catTest.jpg';
+    //this will be add to array [card counter] so that each card is unique
 
     PLAYER_LIST[socket.id] = player;
 
