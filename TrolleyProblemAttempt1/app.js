@@ -20,6 +20,8 @@ serv.listen(2000);
 var SOCKET_LIST = {};
 var PLAYER_LIST = {};
 var BUNNY_LIST = [];
+var PLAYERS_NUMBER_LIST=[];
+var ID_ARRAY=[];
 var counter=0;
 var allPlayersReady=false;
 var activePlayer=0;
@@ -75,8 +77,8 @@ shuffle(CARD_LIST);
 
 
 
-
-//multiple self objects with multiple self.update position functions?
+//this makes a player and holds all of their cards. this code was stolen and modified
+//so it isnt' completely intuitive
 var Player = function (id, counter) {
     var self = {
         //x: 20,
@@ -131,12 +133,16 @@ var Player = function (id, counter) {
     return self;
 };
 
+
+//makes players on connection and assigns images to their cards at random
 var io = require('socket.io')(serv, {});
 io.sockets.on('connection', function (socket) {
     counter++;
     socket.id = Math.random();
     socket.emit('YOUR_PLAYER_ID',socket.id);
     SOCKET_LIST[socket.id] = socket;
+    ID_ARRAY.push(socket.id);
+    //PLAYERS_NUMBER_LIST.push(counter);
 
     var player = Player(socket.id);
     player.card1.image=CARD_LIST[CARD_LIST_COUNTER];
@@ -160,6 +166,7 @@ io.sockets.on('connection', function (socket) {
     socket.on('disconnect', function () {
         delete SOCKET_LIST[socket.id];
         delete PLAYER_LIST[socket.id];
+        //ID_ARRAY.pull(socket.id);
         counter--;
     });
     socket.on('ready', function(){
@@ -223,6 +230,8 @@ setInterval();
     });
 });
 
+//this sends all the info about players and card positions to the 
+//client whenever a player connects or drops a card
  var setInterval=function () {
     //if(allPlayersReady===false){
         readyCheck();
@@ -253,6 +262,7 @@ setInterval();
         });
     }
     console.log(pack);
+    console.log("here is the number list"+ID_ARRAY);
     for (var i in SOCKET_LIST) {
         var socket = SOCKET_LIST[i];
         socket.emit('newP', pack);
@@ -263,6 +273,8 @@ setInterval();
 
 };
 
+//checks if players have clicked the ready button
+
 function readyCheck(){
    var readyCounter=0;
    for (var i in PLAYER_LIST){
@@ -272,6 +284,7 @@ function readyCheck(){
        };
        if (readyCounter===counter){
            allPlayersReady=true;
+           shuffle(PLAYERS_NUMBER_LIST);
        }else{
            allPlayersReady=false;
        }
@@ -285,4 +298,7 @@ function game(){
    
     
 };
-
+//to do
+//add turn orders
+//turn order will be determined on server
+//client will process data depending on booleans assosiated with each player

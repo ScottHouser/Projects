@@ -23,23 +23,19 @@ and open the template in the editor.
 var stage = new PIXI.Container();
     var myView = document.getElementById('ctx');
     
-    var renderer = PIXI.autoDetectRenderer(1200, 700, {view: myView,backgroundColor : 0x1099bb});
+    var renderer = PIXI.autoDetectRenderer(1200, 700, {view: myView,backgroundColor : 0xffffff});
 //
 //// create the root of the scene graph
     //var stage = new PIXI.Container();
 //
-//// create a texture from an image path
+//// these are example images that will probably be deleted
     var texture = PIXI.Texture.fromImage('/Client/img/catTest.jpg');
     var texture2 = PIXI.Texture.fromImage('/Client/img/1-16.png');
     var texture3 = PIXI.Texture.fromImage('/Client/img/2-24.png');
     var textureReady = PIXI.Texture.fromImage('/Client/img/ready.png');
     var exampleStage = PIXI.Texture.fromImage('/Client/img/track.jpg');
 //
-////
-//    for (var i = 0; i < 0; i++)
-//    {
-//        createBunny(Math.floor(Math.random() * 200), Math.floor(Math.random() * 100));
-//    }
+//this logs the amount of players in the game and displays in top right corner
     function playerCount(counter) {
         var localCounter = counter.toString();
         if (localCounter === '1') {
@@ -81,6 +77,8 @@ var stage = new PIXI.Container();
         //strokeThickness: 6
        // });
 //        stage.addChild(playerCount);
+
+//creates a button that players must click before beginning the game
     }
     function playerReadyButton(id, boolean) {
         var bunny = new PIXI.Sprite(textureReady);
@@ -110,6 +108,8 @@ var stage = new PIXI.Container();
         stage.addChild(bunny);
     };
 }
+
+//creates a image background sprite. couldn't figure out a good way to make the canvas an image
     function background() {
         var bunny = new PIXI.Sprite(exampleStage);
         //bunny.localBool=boolean.toString();
@@ -129,6 +129,8 @@ var stage = new PIXI.Container();
         stage.addChild(bunny);
     
 }
+//creates cards in players hands and on the board
+//takes in positions and images to create this
 
     function createBunny(x, y, id, cardNum,allReady,image)
     {
@@ -268,6 +270,7 @@ var stage = new PIXI.Container();
 //                socket.emit('testfunction',{reason:'testing'});
 //            };
 
+//this takes all the data passed by the server and turns it into card sprites (bunnies)
     socket.on('newP', function (data) {
         for (var i = stage.children.length - 1; i >= 0; i--) {
             stage.removeChild(stage.children[i]);
