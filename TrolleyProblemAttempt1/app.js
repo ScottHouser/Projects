@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 var shuffle = require('shuffle-array');
-var pixi= require('pixi');
+var pixi = require('pixi');
 var express = require('express');
 var app = express();
 var serv = require('http').Server(app);
@@ -20,13 +20,17 @@ serv.listen(2000);
 var SOCKET_LIST = {};
 var PLAYER_LIST = {};
 var BUNNY_LIST = [];
-var PLAYERS_NUMBER_LIST=[];
-var ID_ARRAY=[];
-var counter=0;
-var allPlayersReady=false;
-var activePlayer=0;
-var CARD_LIST=[];
-var CARD_LIST_COUNTER=0;
+var PLAYERS_NUMBER_LIST = [];
+//var CurrentPlayer=0;
+var turnCounter = 0;
+var startGame = false;
+var ID_ARRAY = [];
+var counter = 0;
+var allPlayersReady = false;
+var activePlayer = 0;
+var pullingPlayer = 0;
+var CARD_LIST = [];
+var CARD_LIST_COUNTER = 0;
 CARD_LIST.push('/Client/img/1.jpg');
 CARD_LIST.push('/Client/img/2.jpg');
 CARD_LIST.push('/Client/img/3.jpg');
@@ -83,10 +87,11 @@ var Player = function (id, counter) {
     var self = {
         //x: 20,
         //y: 20,
-        isCurrentTurn:false,
-        isPulling:false,
-        isReady:false,
-        playerNumber:counter,
+
+        isCurrentTurn: false,
+        isPulling: false,
+        isReady: false,
+        playerNumber: counter,
         id: id,
         number: "" + Math.floor(10 * Math.random()),
         pressingRight: false,
@@ -94,15 +99,15 @@ var Player = function (id, counter) {
         pressingUp: false,
         pressingDown: false,
         //maxSpd: 10,
-        dragging:false,
-        dragx:0,
-        dragy:0,
-        card1:{x:100,y:600,dragx:100,dragy:600,id:id,cardNum:1,image:''},
-        card2:{x:300,y:600,dragx:300,dragy:600,id:id,cardNum:2,image:''},
-        card3:{x:500,y:600,dragx:500,dragy:600,id:id,cardNum:3,image:''},
-        card4:{x:700,y:600,dragx:700,dragy:600,id:id,cardNum:4,image:''},
-        card5:{x:900,y:600,dragx:900,dragy:600,id:id,cardNum:5,image:''}
-        
+        dragging: false,
+        dragx: 0,
+        dragy: 0,
+        card1: {x: 100, y: 600, dragx: 100, dragy: 600, id: id, cardNum: 1, image: ''},
+        card2: {x: 300, y: 600, dragx: 300, dragy: 600, id: id, cardNum: 2, image: ''},
+        card3: {x: 500, y: 600, dragx: 500, dragy: 600, id: id, cardNum: 3, image: ''},
+        card4: {x: 700, y: 600, dragx: 700, dragy: 600, id: id, cardNum: 4, image: ''},
+        card5: {x: 900, y: 600, dragx: 900, dragy: 600, id: id, cardNum: 5, image: ''}
+
     };
     self.updatePosition = function () {
 //        if (self.pressingRight)
@@ -117,17 +122,17 @@ var Player = function (id, counter) {
 //            self.x=self.dragx;
 //            self.y=self.dragy; 
 //        };
-        self.card1.x=self.card1.dragx;    
-        self.card1.y=self.card1.dragy;    
-        self.card2.x=self.card2.dragx;    
-        self.card2.y=self.card2.dragy;    
-        self.card3.x=self.card3.dragx;    
-        self.card3.y=self.card3.dragy;    
-        self.card4.x=self.card4.dragx;    
-        self.card4.y=self.card4.dragy;    
-        self.card5.x=self.card5.dragx;    
-        self.card5.y=self.card5.dragy;    
-            
+        self.card1.x = self.card1.dragx;
+        self.card1.y = self.card1.dragy;
+        self.card2.x = self.card2.dragx;
+        self.card2.y = self.card2.dragy;
+        self.card3.x = self.card3.dragx;
+        self.card3.y = self.card3.dragy;
+        self.card4.x = self.card4.dragx;
+        self.card4.y = self.card4.dragy;
+        self.card5.x = self.card5.dragx;
+        self.card5.y = self.card5.dragy;
+
 
     };
     return self;
@@ -139,21 +144,21 @@ var io = require('socket.io')(serv, {});
 io.sockets.on('connection', function (socket) {
     counter++;
     socket.id = Math.random();
-    socket.emit('YOUR_PLAYER_ID',socket.id);
+    socket.emit('YOUR_PLAYER_ID', socket.id);
     SOCKET_LIST[socket.id] = socket;
     ID_ARRAY.push(socket.id);
     //PLAYERS_NUMBER_LIST.push(counter);
 
     var player = Player(socket.id);
-    player.card1.image=CARD_LIST[CARD_LIST_COUNTER];
+    player.card1.image = CARD_LIST[CARD_LIST_COUNTER];
     CARD_LIST_COUNTER++;
-    player.card2.image=CARD_LIST[CARD_LIST_COUNTER];
+    player.card2.image = CARD_LIST[CARD_LIST_COUNTER];
     CARD_LIST_COUNTER++;
-    player.card3.image=CARD_LIST[CARD_LIST_COUNTER];
+    player.card3.image = CARD_LIST[CARD_LIST_COUNTER];
     CARD_LIST_COUNTER++;
-    player.card4.image=CARD_LIST[CARD_LIST_COUNTER];
+    player.card4.image = CARD_LIST[CARD_LIST_COUNTER];
     CARD_LIST_COUNTER++;
-    player.card5.image=CARD_LIST[CARD_LIST_COUNTER];
+    player.card5.image = CARD_LIST[CARD_LIST_COUNTER];
     CARD_LIST_COUNTER++;
 //    player.card2.image='/Client/img/catTest.jpg';
 //    player.card3.image='/Client/img/catTest.jpg';
@@ -166,12 +171,25 @@ io.sockets.on('connection', function (socket) {
     socket.on('disconnect', function () {
         delete SOCKET_LIST[socket.id];
         delete PLAYER_LIST[socket.id];
+        //this doesn't work, make this actually remove the id from the array
+        for (var i = 0; i < ID_ARRAY.length; i++) {
+            if (ID_ARRAY[i] === socket.id) {
+                ID_ARRAY.pop(ID_ARRAY[i]);
+            }
+        }
         //ID_ARRAY.pull(socket.id);
         counter--;
+        //might stop disconnect problems
+//        for (var i in PLAYER_LIST) {
+//            var player = PLAYER_LIST[i];
+//            player.isReady=false;
+//            setInterval();
+//        }
+//        ;
     });
-    socket.on('ready', function(){
-        player.isReady=true;
-        activePlayer=1;
+    socket.on('ready', function () {
+        player.isReady = true;
+        //activePlayer=1;
         setInterval();
     });
     socket.on('newBunny', function (data) {
@@ -185,36 +203,42 @@ io.sockets.on('connection', function (socket) {
 //        else if (data.inputId === 'up')
 //            player.pressingUp = data.state;
 //        else if (data.inputId === 'down')
-           // player.pressingDown = data.state;
+        // player.pressingDown = data.state;
 //         if (data.inputId=== 'dragged'){
 //            player.dragging=data.state;
 //        player.dragx=data.positionx;
 //        player.dragy=data.positiony;}
-        if(data.cardNum==='1'){
-            player.card1.dragx=data.positionx;
-            player.card1.dragy=data.positiony;
+        if (data.cardNum === '1') {
+            player.card1.dragx = data.positionx;
+            player.card1.dragy = data.positiony;
         }
-        if(data.cardNum==='2'){
-            player.card2.dragx=data.positionx;
-            player.card2.dragy=data.positiony;
+        if (data.cardNum === '2') {
+            player.card2.dragx = data.positionx;
+            player.card2.dragy = data.positiony;
         }
-        if(data.cardNum==='3'){
-            player.card3.dragx=data.positionx;
-            player.card3.dragy=data.positiony;
+        if (data.cardNum === '3') {
+            player.card3.dragx = data.positionx;
+            player.card3.dragy = data.positiony;
         }
-        if(data.cardNum==='4'){
-            player.card4.dragx=data.positionx;
-            player.card4.dragy=data.positiony;
+        if (data.cardNum === '4') {
+            player.card4.dragx = data.positionx;
+            player.card4.dragy = data.positiony;
         }
-        if(data.cardNum==='5'){
-            player.card5.dragx=data.positionx;
-            player.card5.dragy=data.positiony;
+        if (data.cardNum === '5') {
+            player.card5.dragx = data.positionx;
+            player.card5.dragy = data.positiony;
         }
-        
-            //player.x=data.positionx;
-            //player.y=data.positiony;
+
+        //player.x=data.positionx;
+        //player.y=data.positiony;
     });
 
+//    activePlayer=ID_ARRAY[turnCounter];
+//    
+//    turnCounter++;
+//    if(ID_ARRAY[turnCounter]===null){
+//        turnCounter=0;
+//    }
 //    console.log('socket connection');
 
 //    socket.on('test string', function (data) {
@@ -223,51 +247,64 @@ io.sockets.on('connection', function (socket) {
 //    socket.on('testfunction', function (data) {
 //        console.log('test function successful' + data.reason);
 //    });
-setInterval();
+    setInterval();
 
-    socket.on('drop', function(){
+    socket.on('drop', function () {
+        turnCounter++;
+        if (ID_ARRAY[turnCounter] === undefined) {
+            turnCounter = 0;
+        }
+        activePlayer = ID_ARRAY[turnCounter];
+
+        // turnCounter++;
+        if (ID_ARRAY[turnCounter] === undefined) {
+            turnCounter = 0;
+        }
         setInterval();
     });
 });
 
 //this sends all the info about players and card positions to the 
 //client whenever a player connects or drops a card
- var setInterval=function () {
+var setInterval = function () {
     //if(allPlayersReady===false){
-        readyCheck();
-   // } 
+    readyCheck();
+
+    // } 
     var pack = [];
     for (var i in PLAYER_LIST) {
         var player = PLAYER_LIST[i];
-        
+
         player.updatePosition();
-       //pack=[];
+        //pack=[];
         pack.push({
-           // x: player.x,
+            // x: player.x,
             //y: player.y,
-            activePlayer:activePlayer,
-            allReady:allPlayersReady,
-            ready:player.isReady,
-            counter:counter,
+            pullingPlayer: pullingPlayer,
+            activePlayer: activePlayer,
+            allReady: allPlayersReady,
+            ready: player.isReady,
+            counter: counter,
             number: player.number,
             id: player.id,
-            card1:player.card1,
-            card2:player.card2,
-            card3:player.card3,
-            card4:player.card4,
-            card5:player.card5
-            
-            
-            
+            card1: player.card1,
+            card2: player.card2,
+            card3: player.card3,
+            card4: player.card4,
+            card5: player.card5
+
+
+
         });
     }
-    console.log(pack);
-    console.log("here is the number list"+ID_ARRAY);
+    //console.log(pack);
+    console.log(activePlayer);
+    //console.log("here is the number list"+ID_ARRAY);
     for (var i in SOCKET_LIST) {
         var socket = SOCKET_LIST[i];
         socket.emit('newP', pack);
-        
-   }
+
+    }
 
 
 
@@ -275,29 +312,40 @@ setInterval();
 
 //checks if players have clicked the ready button
 
-function readyCheck(){
-   var readyCounter=0;
-   for (var i in PLAYER_LIST){
-       var player = PLAYER_LIST[i];
-       if (player.isReady===true){
-           readyCounter++;
-       };
-       if (readyCounter===counter){
-           allPlayersReady=true;
-           shuffle(PLAYERS_NUMBER_LIST);
-       }else{
-           allPlayersReady=false;
-       }
-   }
+function readyCheck() {
+    var readyCounter = 0;
+    for (var i in PLAYER_LIST) {
+        var player = PLAYER_LIST[i];
+        if (player.isReady === true) {
+            readyCounter++;
+        }
+        ;
+        if (readyCounter === counter) {
+            allPlayersReady = true;
+            if (activePlayer === 0) {
+                beginGame();
+
+            }
+
+
+        } else {
+            allPlayersReady = false;
+        }
+    }
 }
 //submit button that refreshes all bunnies
 //track all objects and positions. on submit, do new stage and create sprites for all
 //objects and positions
-function game(){
-    startingPlayer= Math.floor(counter * Math.random());
-   
-    
-};
+function beginGame() {
+    shuffle(ID_ARRAY);
+    //startGame=true;
+    activePlayer = ID_ARRAY[0];
+    pullingPlayer = ID_ARRAY[0];
+    console.log("thisistheactiveplay0000000000000000000000000000000000000000000000000000000000000000er" + activePlayer);
+    console.log(ID_ARRAY);
+
+}
+;
 //to do
 //add turn orders
 //turn order will be determined on server
