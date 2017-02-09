@@ -20,10 +20,10 @@ and open the template in the editor.
 //socket.on('YOUR_PLAYER_ID',function(data){
 //    YOUR_PLAYER_ID=data;
 //});
-var stage = new PIXI.Container();
+    var stage = new PIXI.Container();
     var myView = document.getElementById('ctx');
-    
-    var renderer = PIXI.autoDetectRenderer(1200, 700, {view: myView,backgroundColor : 0xffffff});
+
+    var renderer = PIXI.autoDetectRenderer(1200, 700, {view: myView, backgroundColor: 0xffffff});
 //
 //// create the root of the scene graph
     //var stage = new PIXI.Container();
@@ -37,52 +37,49 @@ var stage = new PIXI.Container();
 //
 //this logs the amount of players in the game and displays in top right corner
     function playerCount(counter, activePlayer, pullingPlayer) {
-        var currentPlayerString='';
-        var pullingPlayerString='';
-        if (activePlayer===YOUR_PLAYER_ID){
-            currentPlayerString=' You are the Current Player ';
+        var currentPlayerString = '';
+        var pullingPlayerString = '';
+        if (activePlayer === YOUR_PLAYER_ID) {
+            currentPlayerString = ' You are the Current Player ';
         }
-        if (pullingPlayer===YOUR_PLAYER_ID){
-            pullingPlayerString=' You are the Pulling Player ';
+        if (pullingPlayer === YOUR_PLAYER_ID) {
+            pullingPlayerString = ' You are the Pulling Player ';
         }
         var localCounter = counter.toString();
         if (localCounter === '1') {
-            var bunny = new PIXI.Text(localCounter+"Player In Game"+currentPlayerString+pullingPlayerString,{ color:'#8c1c1c',
-             fill: '#cc00ff',
-            align: 'center',
-        stroke: '#FFFFFF',
-        strokeThickness: 6});
+            var bunny = new PIXI.Text(localCounter + "Player In Game" + currentPlayerString + pullingPlayerString, {color: '#8c1c1c',
+                fill: '#cc00ff',
+                align: 'center',
+                stroke: '#FFFFFF',
+                strokeThickness: 6});
             bunny.scale.set(1);
         } else if (localCounter === '2') {
-            var bunny = new PIXI.Text(localCounter+"Players In Game"+currentPlayerString+pullingPlayerString,{ color:'#8c1c1c',
-             fill: '#cc00ff',
-            align: 'center',
-        stroke: '#FFFFFF',
-        strokeThickness: 6});
+            var bunny = new PIXI.Text(localCounter + "Players In Game" + currentPlayerString + pullingPlayerString, {color: '#8c1c1c',
+                fill: '#cc00ff',
+                align: 'center',
+                stroke: '#FFFFFF',
+                strokeThickness: 6});
             bunny.scale.set(1);
-        }
-         else if (localCounter === '3') {
-            var bunny = new PIXI.Text(localCounter+"Players In Game"+currentPlayerString+pullingPlayerString,{ color:'#8c1c1c',
-             fill: '#cc00ff',
-            align: 'center',
-        stroke: '#FFFFFF',
-        strokeThickness: 6});
+        } else if (localCounter === '3') {
+            var bunny = new PIXI.Text(localCounter + "Players In Game" + currentPlayerString + pullingPlayerString, {color: '#8c1c1c',
+                fill: '#cc00ff',
+                align: 'center',
+                stroke: '#FFFFFF',
+                strokeThickness: 6});
             bunny.scale.set(1);
-        }
-         else if (localCounter === '4') {
-            var bunny = new PIXI.Text(localCounter+"Players In Game"+currentPlayerString,+pullingPlayerString,{ color:'#8c1c1c',
-             fill: '#cc00ff',
-            align: 'center',
-        stroke: '#FFFFFF',
-        strokeThickness: 6});
+        } else if (localCounter === '4') {
+            var bunny = new PIXI.Text(localCounter + "Players In Game" + currentPlayerString, +pullingPlayerString, {color: '#8c1c1c',
+                fill: '#cc00ff',
+                align: 'center',
+                stroke: '#FFFFFF',
+                strokeThickness: 6});
             bunny.scale.set(1);
-        }
-         else if (localCounter === '5') {
-            var bunny = new PIXI.Text(localCounter+"Players In Game"+currentPlayerString+pullingPlayerString,{ color:'#8c1c1c',
-             fill: '#cc00ff',
-            align: 'center',
-        stroke: '#FFFFFF',
-        strokeThickness: 6});
+        } else if (localCounter === '5') {
+            var bunny = new PIXI.Text(localCounter + "Players In Game" + currentPlayerString + pullingPlayerString, {color: '#8c1c1c',
+                fill: '#cc00ff',
+                align: 'center',
+                stroke: '#FFFFFF',
+                strokeThickness: 6});
             bunny.scale.set(1);
         }
 //        bunny.height = 20;
@@ -92,25 +89,25 @@ var stage = new PIXI.Container();
 //        bunny.anchor.set(0.5);
         //bunny.scale.set(1);
         stage.addChild(bunny);
-        
+
 //        playerCount= new PIXI.Text(counter.toString(),{
 //            color:'#8c1c1c',
-  //           fill: '#cc00ff',
-    //        align: 'center',
-      //  stroke: '#FFFFFF',
+        //           fill: '#cc00ff',
+        //        align: 'center',
+        //  stroke: '#FFFFFF',
         //strokeThickness: 6
-       // });
+        // });
 //        stage.addChild(playerCount);
 
 //creates a button that players must click before beginning the game
     }
     function playerReadyButton(id, boolean) {
         var bunny = new PIXI.Sprite(textureReady);
-        bunny.localBool=boolean.toString();
+        bunny.localBool = boolean.toString();
         bunny.localID = id.toString();
         bunny.position.x = 800;
         bunny.position.y = 250;
-        bunny.isdown=false;
+        bunny.isdown = false;
         bunny.anchor.set(0.5);
         bunny.scale.set(1);
         //bunny.position.x = 20;
@@ -123,15 +120,17 @@ var stage = new PIXI.Container();
         function onButtonDown() {
             this.isdown = true;
             this.alpha = 1;
-            socket.emit('ready',{id:id,isReady:boolean});
-            bunny.visible=false;
-        };
+            socket.emit('ready', {id: id, isReady: boolean});
+            bunny.visible = false;
+        }
+        ;
         //stage.addChild(bunny);
-        if(bunny.localBool==='false' && bunny.localID===YOUR_PLAYER_ID.toString()){
+        if (bunny.localBool === 'false' && bunny.localID === YOUR_PLAYER_ID.toString()) {
             //console.log(bunny.localBool);
-        stage.addChild(bunny);
-    };
-}
+            stage.addChild(bunny);
+        }
+        ;
+    }
 
 //creates a image background sprite. couldn't figure out a good way to make the canvas an image
     function background() {
@@ -143,28 +142,60 @@ var stage = new PIXI.Container();
         //bunny.isdown=false;
         bunny.anchor.set(0.5);
         bunny.scale.set(.2);
-       // bunny.position.x = 20;
+        // bunny.position.x = 20;
         //bunny.position.y = 950;
         bunny.interactive = false;
         bunny.buttonMode = false;
         //stage.addChild(bunny);
-        
-            //console.log(bunny.localBool);
+
+        //console.log(bunny.localBool);
         stage.addChild(bunny);
-    
-}
+
+    }
+    function addChoice(pullingPlayer) {
+        var bunny = new PIXI.Sprite(texture);
+        //bunny.localBool=boolean.toString();
+        //bunny.localID = id.toString();
+        bunny.position.x = 350;
+        bunny.position.y = 200;
+        //bunny.isdown=false;
+        bunny.anchor.set(0.5);
+        bunny.scale.set(1);
+        // bunny.position.x = 20;
+        //bunny.position.y = 950;
+        bunny.interactive = true;
+        bunny.buttonMode = true;
+        var bunny2 = new PIXI.Text('You are the deciding player. You will be asked to decide after all cards are played. Press OK to begin', {color: '#8c1c1c',
+            fill: '#cc00ff',
+            align: 'center',
+            stroke: '#FFFFFF',
+            strokeThickness: 6});
+        bunny2.scale.set(1);
+        bunny2.position.x = 350;
+        bunny2.position.y = 300;
+
+        //stage.addChild(bunny);
+
+        //console.log(bunny.localBool);
+        if (pullingPlayer === YOUR_PLAYER_ID) {
+            stage.addChild(bunny);
+            stage.addChild(bunny2);
+        }
+        ;
+
+    }
 //creates cards in players hands and on the board
 //takes in positions and images to create this
 
-    function createBunny(x, y, id, cardNum,allReady,image,activePlayer)
+    function createBunny(x, y, id, cardNum, allReady, image, activePlayer)
     {
         console.log(activePlayer);
         console.log(YOUR_PLAYER_ID);
         //console.log(YOUR_PLAYER_ID);
         //bunny.localCardNum=cardNum.toString();
-        localactivePlayer=activePlayer.toString();
+        localactivePlayer = activePlayer.toString();
         var thisCardImage = PIXI.Texture.fromImage(image);
-        localCardImage=image.toString();
+        localCardImage = image.toString();
         console.log(localCardImage);
         localCardNum = cardNum.toString();
         console.log(localCardNum);
@@ -174,23 +205,23 @@ var stage = new PIXI.Container();
         var bunny = new PIXI.Sprite(thisCardImage);
         id = Math.random();
         bunny.localCardNum = cardNum.toString();
-        bunny.allReady=allReady.toString();
+        bunny.allReady = allReady.toString();
 
         // enable the bunny to be interactive... this will allow it to respond to mouse and touch events
         if (localID === localID2) {
-            
+
             bunny.visible = true;
-        }else{
-            bunny.visible=false;
-        } 
-        if(bunny.allReady==='false'){
-            bunny.interactive = false;
-            
+        } else {
+            bunny.visible = false;
         }
-        if(bunny.allReady==='true'&&activePlayer===YOUR_PLAYER_ID){
+        if (bunny.allReady === 'false') {
+            bunny.interactive = false;
+
+        }
+        if (bunny.allReady === 'true' && activePlayer === YOUR_PLAYER_ID) {
             bunny.interactive = true;
         }
-       
+
         ;
 //        if (localID === localID2&&bunny.allReady==='true'&&activePlayer===YOUR_PLAYER_ID) {
 //            bunny.interactive = true;
@@ -321,13 +352,14 @@ var stage = new PIXI.Container();
         // ctx.clearRect(0, 0, 500, 500);
         for (var i = 0; i < data.length; i++) {
             playerReadyButton(data[i].id, data[i].ready);
-            createBunny(data[i].card1.x, data[i].card1.y, data[i].id, data[i].card1.cardNum,data[i].allReady, data[i].card1.image,data[i].activePlayer);
-            createBunny(data[i].card2.x, data[i].card2.y, data[i].id, data[i].card2.cardNum,data[i].allReady,data[i].card2.image,data[i].activePlayer);
-            createBunny(data[i].card3.x, data[i].card3.y, data[i].id, data[i].card3.cardNum,data[i].allReady,data[i].card3.image,data[i].activePlayer);
-            createBunny(data[i].card4.x, data[i].card4.y, data[i].id, data[i].card4.cardNum,data[i].allReady,data[i].card4.image,data[i].activePlayer);
-            createBunny(data[i].card5.x, data[i].card5.y, data[i].id, data[i].card5.cardNum,data[i].allReady,data[i].card5.image,data[i].activePlayer);
+            createBunny(data[i].card1.x, data[i].card1.y, data[i].id, data[i].card1.cardNum, data[i].allReady, data[i].card1.image, data[i].activePlayer);
+            createBunny(data[i].card2.x, data[i].card2.y, data[i].id, data[i].card2.cardNum, data[i].allReady, data[i].card2.image, data[i].activePlayer);
+            createBunny(data[i].card3.x, data[i].card3.y, data[i].id, data[i].card3.cardNum, data[i].allReady, data[i].card3.image, data[i].activePlayer);
+            createBunny(data[i].card4.x, data[i].card4.y, data[i].id, data[i].card4.cardNum, data[i].allReady, data[i].card4.image, data[i].activePlayer);
+            createBunny(data[i].card5.x, data[i].card5.y, data[i].id, data[i].card5.cardNum, data[i].allReady, data[i].card5.image, data[i].activePlayer);
             playerCount(data[i].counter, data[i].activePlayer, data[i].pullingPlayer);
-           // playerReadyButton(data[i].id, data[i].ready);
+            addChoice(data[i].pullingPlayer);
+            // playerReadyButton(data[i].id, data[i].ready);
 
         }
         ;
