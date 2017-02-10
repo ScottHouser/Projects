@@ -17,6 +17,8 @@ app.use('/client', express.static(__dirname + '/Client'));
 
 serv.listen(2000);
 
+var GameOver=0;
+var ObjectiveFlipper=true;
 var SOCKET_LIST = {};
 var PLAYER_LIST = {};
 var BUNNY_LIST = [];
@@ -89,6 +91,7 @@ var Player = function (id, counter) {
         //y: 20,
 
         isCurrentTurn: false,
+        objective:"",
         isPulling: false,
         isReady: false,
         playerNumber: counter,
@@ -160,6 +163,13 @@ io.sockets.on('connection', function (socket) {
     CARD_LIST_COUNTER++;
     player.card5.image = CARD_LIST[CARD_LIST_COUNTER];
     CARD_LIST_COUNTER++;
+    if(ObjectiveFlipper===true){
+        player.objective="pull";
+        ObjectiveFlipper=false;
+    }else{
+        player.objective="no pull";
+        ObjectiveFlipper=true;
+    }
 //    player.card2.image='/Client/img/catTest.jpg';
 //    player.card3.image='/Client/img/catTest.jpg';
 //    player.card4.image='/Client/img/catTest.jpg';
@@ -191,6 +201,14 @@ io.sockets.on('connection', function (socket) {
         player.isReady = true;
         //activePlayer=1;
         setInterval();
+    });
+    socket.on('pull', function () {
+        GameOver=1;
+         setInterval();
+    });
+    socket.on('noPull', function () {
+        GameOver=2;
+         setInterval();
     });
     socket.on('newBunny', function (data) {
         BUNNY_LIST.push(data.id);
@@ -280,7 +298,9 @@ var setInterval = function () {
         pack.push({
             // x: player.x,
             //y: player.y,
+            objective:player.objective,
             pullingPlayer: pullingPlayer,
+            gameOver: GameOver,
             activePlayer: activePlayer,
             allReady: allPlayersReady,
             ready: player.isReady,
@@ -297,7 +317,7 @@ var setInterval = function () {
 
         });
     }
-    //console.log(pack);
+    console.log(pack);
     console.log(activePlayer);
     //console.log("here is the number list"+ID_ARRAY);
     for (var i in SOCKET_LIST) {
