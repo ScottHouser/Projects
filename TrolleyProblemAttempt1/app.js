@@ -77,6 +77,25 @@ CARD_LIST.push('/Client/img/41.jpg');
 CARD_LIST.push('/Client/img/42.jpg');
 CARD_LIST.push('/Client/img/43.jpg');
 CARD_LIST.push('/Client/img/44.jpg');
+CARD_LIST.push('/Client/img/45.jpg');
+CARD_LIST.push('/Client/img/46.jpg');
+CARD_LIST.push('/Client/img/47.jpg');
+CARD_LIST.push('/Client/img/48.jpg');
+CARD_LIST.push('/Client/img/49.jpg');
+CARD_LIST.push('/Client/img/50.jpg');
+CARD_LIST.push('/Client/img/51.jpg');
+CARD_LIST.push('/Client/img/52.jpg');
+CARD_LIST.push('/Client/img/53.jpg');
+CARD_LIST.push('/Client/img/54.jpg');
+CARD_LIST.push('/Client/img/55.jpg');
+CARD_LIST.push('/Client/img/56.jpg');
+CARD_LIST.push('/Client/img/57.jpg');
+CARD_LIST.push('/Client/img/58.jpg');
+CARD_LIST.push('/Client/img/59.jpg');
+CARD_LIST.push('/Client/img/60.jpg');
+CARD_LIST.push('/Client/img/61.jpg');
+CARD_LIST.push('/Client/img/63.jpg');
+
 shuffle(CARD_LIST);
 
 //figure out how to shuffle array
