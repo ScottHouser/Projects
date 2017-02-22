@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <link href="/Client/css/bootstrap.min.css" rel="stylesheet">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            @import url('https://fonts.googleapis.com/css?family=Oswald');
+             body{
+
+                font-family:Oswald; 
+                background: url('https://images5.alphacoders.com/392/392202.jpg');
+                background-repeat: no-repeat;
+                background-position: center center;
+                background-attachment: fixed;
+                -webkit-background-size: cover;
+                -moz-background-size: cover;
+                -o-background-size: cover;
+                background-size: cover;
+
+            }
+            #header{
+                padding:0px;
+                margin-left:0px;
+                margin-right:0px;
+                background-color:white;
+                 border-bottom: 2px solid #637593;
+                 height:80px;
+            }
+            #nav_bar{
+                padding-top:0px;
+                background-color:white;
+                
+            }
+            #main_pic{
+                border-radius: 25px;
+                border: 2px solid #637593;
+                padding: 20px; 
+               background-color:white;
+                margin:20px;
+               
+            }
+            #cap_top{
+               background-color:white;
+                margin:20px;
+            }
+            #footer{
+                margin-top:60px;
+                background-color:white;
+            }
+            #right{
+              border-radius: 25px;
+                border: 2px solid #637593;
+                padding: 20px; 
+               background-color:white;
+                margin-top:20px;
+               
+            }
+        </style>
+    </head>
+    <body ng-app="myApp">
+
+
+
+        <div ng-controller="MainController">
+            <div id="header" class="container-fluid">
+                <div class="page-header">
+                    <center><h1> {{title}}</h1>  </center>    
+                </div>
+
+            </div>
+            <div id='nav_bar' class="col-md-12">
+            <ul  class="nav nav-pills nav-fill">
+                <li  class="nav-item">
+                    <a style='margin-left:20px' class="nav-link active" href="#">{{link1}}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">{{link2}}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">{{link3}}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">{{link4}}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">{{link5}}</a>
+                </li>
+            </ul>
+            </div>   
+            <div class="row">
+            <div id="main_pic" class="col-md-7">
+                <div id="cap_top">
+                    <center><h2>{{caption}}</h2></center>
+                <div>
+                    <img class="img-responsive img-rounded" src="https://thumbs.dreamstime.com/z/office-worker-guy-using-computer-phone-20750907.jpg" alt="Smiley face" >
+                </div>
+                    <div>
+                        <h2>{{bottomCaption}}</h2>
+                    </div>
+                </div>
+            </div>
+                <div id="right" class="col-md-3 col-md-offset-1">
+                    <h2>More HTML HERE</h2>
+                </div>
+            </div>   
+            <div id="footer" class="col-md-12">
+                <h2>Footer HTML HERE</h2>
+            </div>
+        </div>
+        <script src="/Client/js/jquery-2.2.4.min.js"></script>
+        <script src="/Client/js/bootstrap.min.js"></script>
+
+        <script src="/Client/js/angular.min.js"></script>
+        <script src="/Client/js/angularApp.js"></script>
+
+        <!-- Modules -->
+        <script src="/Client/js/controller.js"></script>
+    </body>
+</html>

@@ -100,12 +100,9 @@ CARD_LIST.push('/Client/img/67.png');
 
 shuffle(CARD_LIST);
 
-//figure out how to shuffle array
 
 
 
-//this makes a player and holds all of their cards. this code was stolen and modified
-//so it isnt' completely intuitive
 var Player = function (id, counter) {
     var self = {
         //x: 20,
@@ -134,18 +131,7 @@ var Player = function (id, counter) {
 
     };
     self.updatePosition = function () {
-//        if (self.pressingRight)
-//            self.x += self.maxSpd;
-//        if (self.pressingLeft)
-//            self.x -= self.maxSpd;
-//        if (self.pressingUp)
-//            self.y -= self.maxSpd;
-//        if (self.pressingDown)
-//            self.y += self.maxSpd;
-//        if (self.dragging){
-//            self.x=self.dragx;
-//            self.y=self.dragy; 
-//        };
+
         self.card1.x = self.card1.dragx;
         self.card1.y = self.card1.dragy;
         self.card2.x = self.card2.dragx;
@@ -191,10 +177,7 @@ io.sockets.on('connection', function (socket) {
         player.objective="no pull";
         ObjectiveFlipper=true;
     }
-//    player.card2.image='/Client/img/catTest.jpg';
-//    player.card3.image='/Client/img/catTest.jpg';
-//    player.card4.image='/Client/img/catTest.jpg';
-//    player.card5.image='/Client/img/catTest.jpg';
+
     //this will be add to array [card counter] so that each card is unique
 
     PLAYER_LIST[socket.id] = player;
@@ -207,16 +190,11 @@ io.sockets.on('connection', function (socket) {
             if (ID_ARRAY[i] === socket.id) {
                 ID_ARRAY.pop(ID_ARRAY[i]);
             }
-        }
-        //ID_ARRAY.pull(socket.id);
-        counter--;
-        //might stop disconnect problems
-//        for (var i in PLAYER_LIST) {
-//            var player = PLAYER_LIST[i];
-//            player.isReady=false;
-//            setInterval();
-//        }
-//        ;
+        };
+
+        setInterval();
+        console.log(ID_ARRAY);
+       
     });
     socket.on('ready', function () {
         player.isReady = true;
@@ -235,18 +213,7 @@ io.sockets.on('connection', function (socket) {
         BUNNY_LIST.push(data.id);
     });
     socket.on('kp', function (data) {
-//        if (data.inputId === 'left')
-//            player.pressingLeft = data.state;
-//        else if (data.inputId === 'right')
-//            player.pressingRight = data.state;
-//        else if (data.inputId === 'up')
-//            player.pressingUp = data.state;
-//        else if (data.inputId === 'down')
-        // player.pressingDown = data.state;
-//         if (data.inputId=== 'dragged'){
-//            player.dragging=data.state;
-//        player.dragx=data.positionx;
-//        player.dragy=data.positiony;}
+
         if (data.cardNum === '1') {
             player.card1.dragx = data.positionx;
             player.card1.dragy = data.positiony;
@@ -338,7 +305,7 @@ var setInterval = function () {
 
         });
     }
-    console.log(pack);
+    //console.log(pack);
     console.log(activePlayer);
     //console.log("here is the number list"+ID_ARRAY);
     for (var i in SOCKET_LIST) {
@@ -357,11 +324,11 @@ function readyCheck() {
     var readyCounter = 0;
     for (var i in PLAYER_LIST) {
         var player = PLAYER_LIST[i];
-        if (player.isReady === true) {
+        if (player.isReady === false) {
             readyCounter++;
         }
         ;
-        if (readyCounter === counter) {
+        if (readyCounter === 0) {
             allPlayersReady = true;
             if (activePlayer === 0) {
                 beginGame();
