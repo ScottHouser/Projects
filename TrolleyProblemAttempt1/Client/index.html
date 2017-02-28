@@ -17,18 +17,14 @@ and open the template in the editor.
     var BUNNY_LIST = [];
     var YOUR_PLAYER_ID;
     var YOUSTARTED=false;
-//var YOUR_PLAYER_ID;
-//socket.on('YOUR_PLAYER_ID',function(data){
-//    YOUR_PLAYER_ID=data;
-//});
+
     var stage = new PIXI.Container();
     var myView = document.getElementById('ctx');
 
     var renderer = PIXI.autoDetectRenderer(1200, 700, {view: myView, backgroundColor: 0xffffff});
-//
+
 //// create the root of the scene graph
-    //var stage = new PIXI.Container();
-//
+    
 //// these are example images that will probably be deleted
     var texture = PIXI.Texture.fromImage('/Client/img/catTest.jpg');
     var texture2 = PIXI.Texture.fromImage('/Client/img/1-16.png');
@@ -39,7 +35,7 @@ and open the template in the editor.
     var pull = PIXI.Texture.fromImage('/Client/img/pullButton.png');
     var noPull = PIXI.Texture.fromImage('/Client/img/noPullButton.png');
     var start = PIXI.Texture.fromImage('/Client/img/StartButton.png');
-//
+
 //this logs the amount of players in the game and displays in top right corner
     function playerCount(counter, activePlayer, pullingPlayer) {
         var currentPlayerString = '';
@@ -178,20 +174,16 @@ function noPullWin(){
 //creates a image background sprite. couldn't figure out a good way to make the canvas an image
     function background() {
         var bunny = new PIXI.Sprite(exampleStage);
-        //bunny.localBool=boolean.toString();
-        //bunny.localID = id.toString();
+        
         bunny.position.x = 350;
         bunny.position.y = 300;
-        //bunny.isdown=false;
+        
         bunny.anchor.set(0.5);
         bunny.scale.set(.2);
-        // bunny.position.x = 20;
-        //bunny.position.y = 950;
+        
         bunny.interactive = false;
         bunny.buttonMode = false;
-        //stage.addChild(bunny);
-
-        //console.log(bunny.localBool);
+       
         stage.addChild(bunny);
 
     }
@@ -199,15 +191,13 @@ function noPullWin(){
     function addChoice(pullingPlayer, activePlayer) {
         
         var bunny = new PIXI.Sprite(start);
-        //bunny.localBool=boolean.toString();
-        //bunny.localID = id.toString();
+        
         bunny.position.x = 500;
         bunny.position.y = 480;
-        //bunny.isdown=false;
+        
         bunny.anchor.set(0.5);
         bunny.scale.set(1);
-        // bunny.position.x = 20;
-        //bunny.position.y = 950;
+       
         bunny.interactive = true;
         bunny.buttonMode = true;
         var bunny2 = new PIXI.Text('You are the deciding player. You will be asked to decide after all cards are played. Press Start to begin', {color: '#8c1c1c',
@@ -230,13 +220,10 @@ function noPullWin(){
     
         
     
-        //stage.addChild(bunny);
-
-        //console.log(bunny.localBool);
+       
         if (pullingPlayer === YOUR_PLAYER_ID&&activePlayer===YOUR_PLAYER_ID) {
             stage.addChild(bunny);
-            //stage.addChild(bunny2);
-            //YOUSTARTED=true;
+            
         }
         ;
 
@@ -244,15 +231,13 @@ function noPullWin(){
     function addChoicePull(pullingPlayer, activePlayer) {
         
         var bunny = new PIXI.Sprite(pull);
-        //bunny.localBool=boolean.toString();
-        //bunny.localID = id.toString();
+        
         bunny.position.x = 300;
         bunny.position.y = 140;
-        //bunny.isdown=false;
+        
         bunny.anchor.set(0.5);
         bunny.scale.set(1);
-        // bunny.position.x = 20;
-        //bunny.position.y = 950;
+        
         bunny.interactive = true;
         bunny.buttonMode = true;
         var bunny2 = new PIXI.Text('You are the deciding player. You will be asked to decide after all cards are played. Press Start to begin', {color: '#8c1c1c',
@@ -275,13 +260,10 @@ function noPullWin(){
     
         
     
-        //stage.addChild(bunny);
-
-        //console.log(bunny.localBool);
+        
         if (pullingPlayer === YOUR_PLAYER_ID&&activePlayer===YOUR_PLAYER_ID) {
             stage.addChild(bunny);
-            //stage.addChild(bunny2);
-            //YOUSTARTED=true;
+          
         }
         ;
 
@@ -289,15 +271,13 @@ function noPullWin(){
     function addChoiceNoPull(pullingPlayer, activePlayer) {
         
         var bunny = new PIXI.Sprite(noPull);
-        //bunny.localBool=boolean.toString();
-        //bunny.localID = id.toString();
+      
         bunny.position.x = 290;
         bunny.position.y = 390;
-        //bunny.isdown=false;
+        
         bunny.anchor.set(0.5);
         bunny.scale.set(1);
-        // bunny.position.x = 20;
-        //bunny.position.y = 950;
+        
         bunny.interactive = true;
         bunny.buttonMode = true;
         var bunny2 = new PIXI.Text('You are the deciding player. You will be asked to decide after all cards are played. Press Start to begin', {color: '#8c1c1c',
@@ -320,13 +300,10 @@ function noPullWin(){
     
         
     
-        //stage.addChild(bunny);
-
-        //console.log(bunny.localBool);
+        
         if (pullingPlayer === YOUR_PLAYER_ID&&activePlayer===YOUR_PLAYER_ID) {
             stage.addChild(bunny);
-           // stage.addChild(bunny2);
-            //YOUSTARTED=true;
+           
         }
         ;
 
@@ -338,8 +315,7 @@ function noPullWin(){
     {
         console.log(activePlayer);
         console.log(YOUR_PLAYER_ID);
-        //console.log(YOUR_PLAYER_ID);
-        //bunny.localCardNum=cardNum.toString();
+        
         localactivePlayer = activePlayer.toString();
         var thisCardImage = PIXI.Texture.fromImage(image);
         localCardImage = image.toString();
@@ -386,18 +362,7 @@ function noPullWin(){
             bunny.interactive=false;
             bunny2.visible=false;
         }
-//        if (localID === localID2&&bunny.allReady==='true'&&activePlayer===YOUR_PLAYER_ID) {
-//            bunny.interactive = true;
-//            bunny.visible = true;
-//        }else if(localID === localID2&&bunny.allReady==='false'){
-//            bunny.interactive = false;
-//            bunny.visible = true;
-//        }
-//        else {
-//            bunny.interactive = false;
-//            bunny.visible = false;
-//        }
-//        ;
+//        
         if (y < 505) {
             bunny.visible = true;
         }
@@ -499,14 +464,9 @@ function noPullWin(){
 
     socket.on('YOUR_PLAYER_ID', function (data) {
         YOUR_PLAYER_ID = data;
-        //console.log(data);
-        //console.log(YOUR_PLAYER_ID);
+        
     });
-//            socket.emit('test string',{testObject:'testObjectString'});
-//            
-//            var testF=function(){
-//                socket.emit('testfunction',{reason:'testing'});
-//            };
+
 
 //this takes all the data passed by the server and turns it into card sprites (bunnies)
     socket.on('newP', function (data) {
@@ -514,8 +474,7 @@ function noPullWin(){
             stage.removeChild(stage.children[i]);
         }
         background();
-        // renderer.render(stage);
-        // ctx.clearRect(0, 0, 500, 500);
+       
         for (var i = 0; i < data.length; i++) {
             if(data[i].gameOver===0){
             playerReadyButton(data[i].id, data[i].ready);
@@ -553,35 +512,9 @@ function noPullWin(){
         //ctx.fillRect( data[i].x, data[i].y,150,100);
     });
 
-    document.onkeydown = function (event) {
-        ///console.log(event);
-//        if (event.keyCode === 68)
-//            socket.emit('kp', {inputId: 'right', state: true});
-//        else if (event.keyCode === 83)
-//            socket.emit('kp', {inputId: 'down', state: true});
-//        else if (event.keyCode === 65)
-//            socket.emit('kp', {inputId: 'left', state: true});
-//        else if (event.keyCode === 87)
-//            socket.emit('kp', {inputId: 'up', state: true});
+    
 
-    };
 
-    document.onkeyup = function (event) {
-//        if (event.keyCode === 68)
-//            socket.emit('kp', {inputId: 'right', state: false});
-//        else if (event.keyCode === 83)
-//            socket.emit('kp', {inputId: 'down', state: false});
-//        else if (event.keyCode === 65)
-//            socket.emit('kp', {inputId: 'left', state: false});
-//        else if (event.keyCode === 87)
-//            socket.emit('kp', {inputId: 'up', state: false});
-
-    };
-//           
-
-//            socket.on('servermessage',function(data){
-//                console.log(data.msg);
-//            });
 </script>
 
 

@@ -105,8 +105,7 @@ shuffle(CARD_LIST);
 
 var Player = function (id, counter) {
     var self = {
-        //x: 20,
-        //y: 20,
+       
 
         isCurrentTurn: false,
         objective:"",
@@ -149,7 +148,7 @@ var Player = function (id, counter) {
 };
 
 
-//makes players on connection and assigns images to their cards at random
+
 var io = require('socket.io')(serv, {});
 io.sockets.on('connection', function (socket) {
     counter++;
@@ -239,20 +238,7 @@ io.sockets.on('connection', function (socket) {
         //player.y=data.positiony;
     });
 
-//    activePlayer=ID_ARRAY[turnCounter];
-//    
-//    turnCounter++;
-//    if(ID_ARRAY[turnCounter]===null){
-//        turnCounter=0;
-//    }
-//    console.log('socket connection');
 
-//    socket.on('test string', function (data) {
-//        console.log('test successful' + data.testObject);
-//    });
-//    socket.on('testfunction', function (data) {
-//        console.log('test function successful' + data.reason);
-//    });
     setInterval();
 
     socket.on('drop', function () {
@@ -354,7 +340,3 @@ function beginGame() {
 
 }
 ;
-//to do
-//add turn orders
-//turn order will be determined on server
-//client will process data depending on booleans assosiated with each player
